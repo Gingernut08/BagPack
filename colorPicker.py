@@ -51,19 +51,35 @@ class ColorPicker:
         self.sliderPos = [[self.sliderSpacing + self.pos[0], self.sliderSpacing + self.pos[1] + i * (self.sliderHeight + self.sliderSpacing)] for i in range(3)]
         self.types = [0, 1, 2]
         self.sliders = [ColorSlider(self.sliderPos[i], self.sliderWidth, self.sliderHeight, self.types[i], self, screen) for i in range(len(self.sliderPos))]
+        self.sliders[1].value = 1
         self.hlsColor = [0, 0, 0]
         self.rgbColor = colorsys.hsv_to_rgb(*self.hlsColor)
         self.font = pygame.font.SysFont("comicsansms", 18)
         self.screen = screen
+        self.submit = False
     
     def event_handle(self, event):
-        for slider in self.sliders:
-            slider.event_handle(event)
+        if self.shown:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if self.pos[0] + self.width - self.height + self.sliderSpacing <= pos[0] <= self.pos[0] + self.width - self.sliderSpacing:
+                    if self.pos[1] + self.sliderHeight * 2 + self.sliderSpacing * 3 <= pos[1] <= self.pos[1] + self.height - self.sliderSpacing:
+                        self.submit = True
+                if not (self.pos[0] <= pos[0] <= self.pos[0] + self.width and self.pos[1] <= pos[1] <= self.pos[1] + self.height):
+                    self.shown = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    self.submit = True
+            for slider in self.sliders:
+                slider.event_handle(event)
     
     def update_position(self):
         pos = pygame.mouse.get_pos()
         for slider in self.sliders:
             slider.update_position(pos)
+        self.sliderPos = [[self.sliderSpacing + self.pos[0], self.sliderSpacing + self.pos[1] + i * (self.sliderHeight + self.sliderSpacing)] for i in range(3)]
+        for i in range(3):
+            self.sliders[i].pos = self.sliderPos[i]
     
     def update_color(self):
         self.hlsColor = [slider.value for slider in self.sliders]
@@ -71,7 +87,7 @@ class ColorPicker:
     
     def draw(self):
         if self.shown:
-            pygame.draw.rect(self.screen, (50, 50, 50), pygame.Rect(self.pos[0], self.pos[1], self.width, self.height))
+            pygame.draw.rect(self.screen, (20, 20, 20), pygame.Rect(self.pos[0], self.pos[1], self.width, self.height))
             renderText = self.font.render("Submit", 1, (0, 0, 0))
             textPos = (self.pos[0] + self.sliderWidth + self.sliderSpacing * 3 + self.sliderHeight * 1.5, self.pos[1] + self.sliderHeight * 2.5 + self.sliderSpacing * 3)
             textRect = renderText.get_rect(center = textPos)
