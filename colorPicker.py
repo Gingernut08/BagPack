@@ -60,7 +60,8 @@ class ColorPicker:
         for slider in self.sliders:
             slider.event_handle(event)
     
-    def update_position(self, pos):
+    def update_position(self):
+        pos = pygame.mouse.get_pos()
         for slider in self.sliders:
             slider.update_position(pos)
     
