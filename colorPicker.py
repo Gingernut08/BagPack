@@ -41,6 +41,7 @@ class ColorSlider:
 
 class ColorPicker:
     def __init__(self, screen):
+        self.shown = False
         self.pos = [100, 100]
         self.sliderWidth = 300
         self.sliderHeight = 20
@@ -52,16 +53,13 @@ class ColorPicker:
         self.sliders = [ColorSlider(self.sliderPos[i], self.sliderWidth, self.sliderHeight, self.types[i], self, screen) for i in range(len(self.sliderPos))]
         self.hlsColor = [0, 0, 0]
         self.rgbColor = colorsys.hsv_to_rgb(*self.hlsColor)
-        self.font = pygame.font.SysFont("mscomicsans", 22)
+        self.font = pygame.font.SysFont("comicsansms", 18)
         self.screen = screen
     
     def event_handle(self, event):
         for slider in self.sliders:
             slider.event_handle(event)
-        
     
-    # def is_submit_clicked(self, pos):
-    #     if 
     def update_position(self, pos):
         for slider in self.sliders:
             slider.update_position(pos)
@@ -71,13 +69,14 @@ class ColorPicker:
         self.rgbColor = colorsys.hls_to_rgb(*self.hlsColor)
     
     def draw(self):
-        pygame.draw.rect(self.screen, (50, 50, 50), pygame.Rect(self.pos[0], self.pos[1], self.width, self.height))
-        renderText = self.font.render("Submit", 1, (0, 0, 0))
-        textPos = (self.pos[0] + self.sliderWidth + self.sliderSpacing * 3 + self.sliderHeight * 1.5, self.pos[1] + self.sliderHeight * 2.5 + self.sliderSpacing * 3 + 2)
-        textRect = renderText.get_rect(center = textPos)
-        for slider in self.sliders:
-            self.update_color()
-            slider.draw()
-        pygame.draw.rect(self.screen, to_8Bit_RGB(self.rgbColor), pygame.Rect(self.pos[0] + self.sliderWidth + self.sliderSpacing * 2, self.pos[1] + self.sliderSpacing, self.sliderHeight * 3 + self.sliderSpacing * 2, self.sliderHeight * 2 + self.sliderSpacing))
-        pygame.draw.rect(self.screen, (200, 200, 200), pygame.Rect(self.pos[0] + self.sliderWidth + self.sliderSpacing * 2, self.pos[1] + self.sliderHeight * 2 + self.sliderSpacing * 3, self.sliderHeight * 3 + self.sliderSpacing * 2, self.sliderHeight))
-        self.screen.blit(renderText, textRect)
+        if self.shown:
+            pygame.draw.rect(self.screen, (50, 50, 50), pygame.Rect(self.pos[0], self.pos[1], self.width, self.height))
+            renderText = self.font.render("Submit", 1, (0, 0, 0))
+            textPos = (self.pos[0] + self.sliderWidth + self.sliderSpacing * 3 + self.sliderHeight * 1.5, self.pos[1] + self.sliderHeight * 2.5 + self.sliderSpacing * 3)
+            textRect = renderText.get_rect(center = textPos)
+            for slider in self.sliders:
+                self.update_color()
+                slider.draw()
+            pygame.draw.rect(self.screen, to_8Bit_RGB(self.rgbColor), pygame.Rect(self.pos[0] + self.sliderWidth + self.sliderSpacing * 2, self.pos[1] + self.sliderSpacing, self.sliderHeight * 3 + self.sliderSpacing * 2, self.sliderHeight * 2 + self.sliderSpacing))
+            pygame.draw.rect(self.screen, (200, 200, 200), pygame.Rect(self.pos[0] + self.sliderWidth + self.sliderSpacing * 2, self.pos[1] + self.sliderHeight * 2 + self.sliderSpacing * 3, self.sliderHeight * 3 + self.sliderSpacing * 2, self.sliderHeight))
+            self.screen.blit(renderText, textRect)
