@@ -3,6 +3,9 @@ import colorsys, pygame
 def to_8Bit_RGB(color):
     return [255 * i for i in color]
 
+def from_8Bit_RGB(color):
+    return [i / 255 for i in color]
+
 class ColorSlider:
     def __init__(self, pos, width, height, type, group, screen):
         # sliders.append(self)
