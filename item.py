@@ -1,7 +1,15 @@
-from imports import pygame, colorsys, tkinter, json
+from imports import pygame, colorsys, tkinter, json, ctypes
 from colorPicker import ColorPicker, to_8Bit_RGB, from_8Bit_RGB
-from generalFuncs import focus_pygame_window
-from varSetup import items
+from varSetup import items, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numLeftButtons
+
+
+def focus_pygame_window():
+    wm_info = pygame.display.get_wm_info()
+    hwnd = wm_info.get("window")
+
+    if hwnd:
+        ctypes.windll.user32.ShowWindow(hwnd, 5)
+        ctypes.windll.user32.SetForegroundWindow(hwnd)
 
 def create_item(data, pos, screen):
     item = Item(
@@ -22,20 +30,6 @@ def create_item(data, pos, screen):
     item.picker.rgbColor = from_8Bit_RGB(item.color)
     for i in range(3):
         item.picker.sliders[i].value = item.picker.hlsColor[i]
-
-def import_item(screen):
-    filename = tkinter.filedialog.askopenfilename(
-                                                                title="Select File To Import",
-                                                                filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
-                                                            )
-    if filename:
-        try:
-            with open(filename) as f:
-                data = json.load(f)
-            create_item(data, [100, 100], screen)
-        except:
-            pass
-    focus_pygame_window()
 
 def save_item_states():
     data = {"items": [item.to_dict() for item in items]}
@@ -61,10 +55,15 @@ class Item:
         self.relPos = [0, 0]
         self.picker = ColorPicker(self.screen)
         self.color = (255, 255, 255)
+        self.backColor = (20, 20, 20)
+        self.highlightColor = (40, 40, 40)
+        self.selectColor = (80, 80, 80)
         self.setup_font()
         self.screenWidth = WIDTH
         self.screenHeight = HEIGHT
         self.picker.pos = [self.pos[0] + self.size[0] + self.spacing, self.pos[1]]
+        self.deleteRange = ((0, topSpacing), (200, topSpacing + (self.screenHeight - topSpacing - bottomSpacing) // numLeftButtons - self.height // 2))
+        self.saveRange = ((0, topSpacing + (self.screenHeight - topSpacing - bottomSpacing) // numLeftButtons - self.height // 2), (200, topSpacing + 2 * (self.screenHeight - topSpacing - bottomSpacing) // numLeftButtons - self.height))
     
     def setup_font(self):
         self.headSize = 30
@@ -116,11 +115,16 @@ class Item:
     
     def draw(self):
         if self.shown:
-            backgroundColor = (20, 20, 20)
-            if self.pos[0] <= 40 and self.pos[1] <= 40:
-                backgroundColor = (40, 20, 20)
-            if self.screenWidth - self.size[0] - self.pos[0] <= 40 and self.pos[1] <= 40:
-                backgroundColor = (20, 40, 20)
+            pos = pygame.mouse.get_pos()
+            backgroundColor = self.backColor
+            if self.is_clicked(pos):
+                backgroundColor = self.highlightColor
+            if self.selected:
+                backgroundColor = self.selectColor
+            if self.deleteRange[0][0] <= self.pos[0] <= self.deleteRange[1][0] and self.deleteRange[0][1] <= self.pos[1] <= self.deleteRange[1][1]:
+                backgroundColor = (backgroundColor[0] + 20, backgroundColor[1], backgroundColor[2])
+            if self.saveRange[0][0] <= self.pos[0] <= self.saveRange[1][0] and self.saveRange[0][1] <= self.pos[1] <= self.saveRange[1][1]:
+                backgroundColor = (backgroundColor[0], backgroundColor[1] + 20, backgroundColor[2])
             pygame.draw.rect(self.screen, self.color, pygame.Rect(self.pos[0], self.pos[1], max(self.widths) + self.spacing * 2 + self.colorWidth, self.height), border_radius=10)
             pygame.draw.rect(self.screen, backgroundColor, pygame.Rect(self.pos[0], self.pos[1], max(self.widths) + self.spacing * 2, self.height), border_radius=10)
             textPos = [self.pos[0] + self.spacing] + list(self.text[0].get_rect(center = self.pos))[1:]
@@ -160,9 +164,9 @@ class Item:
                     self.relPos = [pos[i] - self.pos[i] for i in range(2)]
             if event.type == pygame.MOUSEBUTTONUP:
                 self.selected = False
-                if self.pos[0] <= 40 and self.pos[1] <= 40:
+                if self.deleteRange[0][0] <= self.pos[0] <= self.deleteRange[1][0] and self.deleteRange[0][1] <= self.pos[1] <= self.deleteRange[1][1]:
                     self.delete()
-                if self.screenWidth - self.size[0] - self.pos[0] <= 40 and self.pos[1] <= 40:
+                if self.saveRange[0][0] <= self.pos[0] <= self.saveRange[1][0] and self.saveRange[0][1] <= self.pos[1] <= self.saveRange[1][1]:
                     self.save()
             if self.picker.submit:
                 self.color = to_8Bit_RGB(self.picker.rgbColor)
@@ -180,8 +184,13 @@ class Item:
                 items.append(self)
         if self.selected:
             pos = pygame.mouse.get_pos()
-            self.pos = [min(max(pos[0] - self.relPos[0], 0), self.screenWidth - self.size[0]),
-                        min(max(pos[1] - self.relPos[1], 0), self.screenHeight - self.size[1])
+            self.pos = [min(max(pos[0] - self.relPos[0], leftSpacing), self.screenWidth - self.size[0] - rightSpacing),
+                        min(max(pos[1] - self.relPos[1], topSpacing), self.screenHeight - self.size[1] - bottomSpacing)
                         ]
         self.picker.update_position()
         self.picker.pos = [self.pos[0] + self.size[0] + self.spacing, self.pos[1]]
+        if self.pos[0] < self.saveRange[1][0] and self.pos[1] > self.saveRange[1][1]:
+            if self.saveRange[1][0] - self.pos[0] > self.pos[1] - self.saveRange[1][1]:
+                self.pos[1] = self.saveRange[1][1]
+            elif self.saveRange[1][0] - self.pos[0] <= self.pos[1] - self.saveRange[1][1]:
+                self.pos[0] = self.saveRange[1][0]

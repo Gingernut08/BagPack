@@ -1,15 +1,16 @@
 from imports import  pygame
-from item import Item, import_item, save_item_states, recall_item_states
-from varSetup import root, screen, WIDTH, HEIGHT, items
-from generalFuncs import draw
-
-
+from item import Item, save_item_states, recall_item_states
+from varSetup import root, screen, WIDTH, HEIGHT, items, buttons
+from generalFuncs import draw, create_buttons
+from buttonFunctions import import_item
 
 pygame.init()
 pygame.font.init()
 root.withdraw()
 
-commonKeys = ["NAME", "BRAND", "WEIGHT", "COLOR", "CATEGORY"]
+commonKeys = [
+    "NAME", "BRAND", "WEIGHT", "COLOR", "CATEGORY"
+    ]
 testItemPeramters = {   
                         "COMMON":{
                             "NAME": "Atmos AG 65",
@@ -27,6 +28,8 @@ running = True
 
 recall_item_states(screen)
 
+create_buttons()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -43,8 +46,10 @@ while running:
                 import_item(screen)
 
         for item in items:    item.event_handle(event)
+        for button in buttons:    button.event_handle(event)
     for item in items:    item.update_position()
     draw()
+    pygame.display.flip()
 
 pygame.quit()
 save_item_states()

@@ -8,7 +8,6 @@ def from_8Bit_RGB(color):
 
 class ColorSlider:
     def __init__(self, pos, width, height, type, group, screen):
-        # sliders.append(self)
         self.width = width
         self.height = height
         self.pos = pos
