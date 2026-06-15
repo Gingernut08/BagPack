@@ -1,3 +1,84 @@
 {
     "items": [
-        
+        {
+            "shown": true,
+            "pos": [
+                1178,
+                518
+            ],
+            "selected": false,
+            "perameters": {
+                "COMMON": {
+                    "NAME": "Atmos AG 65",
+                    "BRAND": "Osprey",
+                    "WEIGHT": 2.09,
+                    "COLOR": "Blue",
+                    "CATEGORY": "Bag"
+                },
+                "SPECIALIST": {
+                    "CAPACITY": "65 Litres"
+                }
+            },
+            "commonKeys": [
+                "NAME",
+                "BRAND",
+                "WEIGHT",
+                "COLOR",
+                "CATEGORY"
+            ],
+            "colorWidth": 20,
+            "relPos": [
+                133,
+                98
+            ],
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "screenWidth": 1920,
+            "screenHeight": 1080,
+            "time": 1781516768.431778
+        },
+        {
+            "shown": true,
+            "pos": [
+                991,
+                356
+            ],
+            "selected": false,
+            "perameters": {
+                "COMMON": {
+                    "NAME": "Atmos AG 65",
+                    "BRAND": "Osprey",
+                    "WEIGHT": 2.09,
+                    "COLOR": "Blue",
+                    "CATEGORY": "Bag"
+                },
+                "SPECIALIST": {
+                    "CAPACITY": "65 Litres"
+                }
+            },
+            "commonKeys": [
+                "NAME",
+                "BRAND",
+                "WEIGHT",
+                "COLOR",
+                "CATEGORY"
+            ],
+            "colorWidth": 20,
+            "relPos": [
+                136,
+                90
+            ],
+            "color": [
+                116.24883333333335,
+                35.05116666666667,
+                35.05116666666667
+            ],
+            "screenWidth": 1920,
+            "screenHeight": 1080,
+            "time": 1781516768.4821906
+        }
+    ]
+}
