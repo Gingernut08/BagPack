@@ -28,6 +28,21 @@ running = True
 
 recall_item_states(screen)
 
+
+# from guiElements import Button
+# def buttonFunc():
+#     print("TEST BUTTON PRESSED")
+# buttonPerameters = (
+#                         (200, 200),
+#                         200, 
+#                         100, 
+#                         "TEST",
+#                         buttonFunc,
+#                         screen
+#                     )
+# Button(*buttonPerameters)
+
+
 create_buttons()
 
 while running:
