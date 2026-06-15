@@ -1,14 +1,52 @@
-from colorPicker import pygame, colorsys, ColorPicker, to_8Bit_RGB, from_8Bit_RGB
-import tkinter, tkinter.filedialog, json, ctypes
-items = []
+from imports import pygame, colorsys, tkinter, json
+from colorPicker import ColorPicker, to_8Bit_RGB, from_8Bit_RGB
+from generalFuncs import focus_pygame_window
+from varSetup import items
 
-def focus_pygame_window():
-    wm_info = pygame.display.get_wm_info()
-    hwnd = wm_info.get("window")
+def create_item(data, pos, screen):
+    item = Item(
+        data["perameters"],
+        data["commonKeys"],
+        screen,
+        data["screenWidth"],
+        data["screenHeight"]
+    )
 
-    if hwnd:
-        ctypes.windll.user32.ShowWindow(hwnd, 5)
-        ctypes.windll.user32.SetForegroundWindow(hwnd)
+    item.shown = data["shown"]
+    item.pos = pos
+    item.selected = data["selected"]
+    item.colorWidth = data["colorWidth"]
+    item.relPos = data["relPos"]
+    item.color = tuple(data["color"])
+    item.picker.hlsColor = colorsys.rgb_to_hls(*from_8Bit_RGB(data["color"]))
+    item.picker.rgbColor = from_8Bit_RGB(item.color)
+    for i in range(3):
+        item.picker.sliders[i].value = item.picker.hlsColor[i]
+
+def import_item(screen):
+    filename = tkinter.filedialog.askopenfilename(
+                                                                title="Select File To Import",
+                                                                filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+                                                            )
+    if filename:
+        try:
+            with open(filename) as f:
+                data = json.load(f)
+            create_item(data, [100, 100], screen)
+        except:
+            pass
+    focus_pygame_window()
+
+def save_item_states():
+    data = {"items": [item.to_dict() for item in items]}
+    with open('save.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+def recall_item_states(screen):
+    with open("save.json") as f:
+        data = json.load(f)
+    for item_data in data["items"]:
+        create_item(item_data, item_data["pos"], screen)
 
 class Item:
     def __init__(self, perameters, commonKeys, screen, WIDTH, HEIGHT):
