@@ -28,22 +28,11 @@ running = True
 
 recall_item_states(screen)
 
-
-# from guiElements import Button
-# def buttonFunc():
-#     print("TEST BUTTON PRESSED")
-# buttonPerameters = (
-#                         (200, 200),
-#                         200, 
-#                         100, 
-#                         "TEST",
-#                         buttonFunc,
-#                         screen
-#                     )
-# Button(*buttonPerameters)
-
-
 create_buttons()
+
+from guiElements import TextInput
+test = TextInput((200, 200), 200, 100, "INPUT", screen)
+
 
 while running:
     for event in pygame.event.get():
@@ -57,13 +46,12 @@ while running:
             if event.key == pygame.K_SPACE:
                 Item(testItemPeramters, commonKeys, screen, WIDTH, HEIGHT)
 
-            if event.key == pygame.K_BACKSPACE:
-                import_item(screen)
-
         for item in items:    item.event_handle(event)
+        test.event_handle(event)
         for button in buttons:    button.event_handle(event)
     for item in items:    item.update_position()
     draw()
+    test.draw()
     pygame.display.flip()
 
 pygame.quit()

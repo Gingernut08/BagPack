@@ -10,6 +10,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 topSpacing = 100
 bottomSpacing = 0
-leftSpacing = 100
+leftSpacing = 200
 rightSpacing = 100
-numLeftButtons = 4
+numRightButtons = 3
+numLeftButtons = 2

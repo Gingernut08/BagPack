@@ -1,6 +1,6 @@
 from imports import pygame, colorsys, tkinter, json, ctypes
 from colorPicker import ColorPicker, to_8Bit_RGB, from_8Bit_RGB
-from varSetup import items, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numLeftButtons
+from varSetup import items, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons
 
 
 def focus_pygame_window():
@@ -62,8 +62,12 @@ class Item:
         self.screenWidth = WIDTH
         self.screenHeight = HEIGHT
         self.picker.pos = [self.pos[0] + self.size[0] + self.spacing, self.pos[1]]
-        self.deleteRange = ((0, topSpacing), (200, topSpacing + (self.screenHeight - topSpacing - bottomSpacing) // numLeftButtons - self.height // 2))
-        self.saveRange = ((0, topSpacing + (self.screenHeight - topSpacing - bottomSpacing) // numLeftButtons - self.height // 2), (200, topSpacing + 2 * (self.screenHeight - topSpacing - bottomSpacing) // numLeftButtons - self.height))
+        i = 0
+        self.deleteRange = ((self.screenWidth - 200 - self.size[0], topSpacing + i * (self.screenHeight - topSpacing - bottomSpacing) // numRightButtons),                    (self.screenWidth, topSpacing + (i + 1) * (self.screenHeight - topSpacing - bottomSpacing) // numRightButtons - self.height // 2))
+        i += 1
+        self.editRange =   ((self.screenWidth - 200 - self.size[0], topSpacing + i * (self.screenHeight - topSpacing - bottomSpacing) // numRightButtons - self.height // 2), (self.screenWidth, topSpacing + (i + 1) * (self.screenHeight - topSpacing - bottomSpacing) // numRightButtons - self.height))
+        i += 1
+        self.saveRange =   ((self.screenWidth - 200 - self.size[0], topSpacing + i * (self.screenHeight - topSpacing - bottomSpacing) // numRightButtons - self.height // 2), (self.screenWidth, topSpacing + (i + 1) * (self.screenHeight - topSpacing - bottomSpacing) // numRightButtons - self.height))
     
     def setup_font(self):
         self.headSize = 30
@@ -113,6 +117,9 @@ class Item:
             self.pos = [self.screenWidth - self.size[0] - 50, 50]
         focus_pygame_window()
     
+    def edit(self):
+        print("EDINTING")
+    
     def draw(self):
         if self.shown:
             pos = pygame.mouse.get_pos()
@@ -123,6 +130,8 @@ class Item:
                 backgroundColor = self.selectColor
             if self.deleteRange[0][0] <= self.pos[0] <= self.deleteRange[1][0] and self.deleteRange[0][1] <= self.pos[1] <= self.deleteRange[1][1]:
                 backgroundColor = (backgroundColor[0] + 20, backgroundColor[1], backgroundColor[2])
+            if self.editRange[0][0] <= self.pos[0] <= self.editRange[1][0] and self.editRange[0][1] <= self.pos[1] <= self.editRange[1][1]:
+                backgroundColor = (backgroundColor[0] + 20, backgroundColor[1] + 20, backgroundColor[2])
             if self.saveRange[0][0] <= self.pos[0] <= self.saveRange[1][0] and self.saveRange[0][1] <= self.pos[1] <= self.saveRange[1][1]:
                 backgroundColor = (backgroundColor[0], backgroundColor[1] + 20, backgroundColor[2])
             pygame.draw.rect(self.screen, self.color, pygame.Rect(self.pos[0], self.pos[1], max(self.widths) + self.spacing * 2 + self.colorWidth, self.height), border_radius=10)
@@ -166,6 +175,8 @@ class Item:
                 self.selected = False
                 if self.deleteRange[0][0] <= self.pos[0] <= self.deleteRange[1][0] and self.deleteRange[0][1] <= self.pos[1] <= self.deleteRange[1][1]:
                     self.delete()
+                if self.editRange[0][0] <= self.pos[0] <= self.editRange[1][0] and self.editRange[0][1] <= self.pos[1] <= self.editRange[1][1]:
+                    self.edit()
                 if self.saveRange[0][0] <= self.pos[0] <= self.saveRange[1][0] and self.saveRange[0][1] <= self.pos[1] <= self.saveRange[1][1]:
                     self.save()
             if self.picker.submit:
