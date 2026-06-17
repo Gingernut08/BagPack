@@ -1,9 +1,10 @@
 from imports import pygame
-from varSetup import buttons
+from varSetup import buttons, clickables, texts, tabPress
 
 class Button:
     def __init__(self, pos, width, height, text, function, perameters, screen):
         buttons.append(self)
+        clickables.append(self)
         self.pos = pos
         self.width = width
         self.height = height
@@ -50,6 +51,8 @@ class Button:
 
 class TextInput:
     def __init__(self, pos, width, height, text, screen):
+        clickables.append(self)
+        texts.append(self)
         self.pos = pos
         self.width = width
         self.height = height
@@ -75,18 +78,30 @@ class TextInput:
         if self.inputText == "":
             textColor = self.placeholderColor
             text = self.placeholderText
-        self.renderedText = self.font.render(text, 1, textColor)
         pos = pygame.mouse.get_pos()
         color = self.color
         if self.is_clicked(pos):
             color = self.highlightColor
         if self.selected:
             color = self.selectColor
+        self.renderedText = self.font.render(text, 1, textColor)
+        textRect = self.renderedText.get_rect(center = (self.pos[0] + self.width // 2, self.pos[1] + self.height // 2))
+        while textRect[2] >= self.width - 10:
+            text = text[1:]
+            self.renderedText = self.font.render(text, 1, textColor)
+            textRect = self.renderedText.get_rect(center = (self.pos[0] + self.width // 2, self.pos[1] + self.height // 2))
         if self.shown:
             borderWidth = 2
             pygame.draw.rect(self.screen, color, pygame.Rect(self.pos[0] + borderWidth, self.pos[1] + borderWidth, self.width - 2 * borderWidth, self.height - 2 * borderWidth), border_radius=10 - borderWidth)
             pygame.draw.rect(self.screen, (150, 150, 150), pygame.Rect(self.pos[0], self.pos[1], self.width, self.height), borderWidth, 10)
-            self.screen.blit(self.renderedText, self.renderedText.get_rect(center = (self.pos[0] + self.width // 2, self.pos[1] + self.height // 2)))
+            self.screen.blit(self.renderedText, textRect)
+    
+    def tab_check(self):
+        if self.selected and not tabPress:
+            self.selected = False
+            texts[(texts.index(self) + 1) % len(texts)].selected = True
+            return True
+        return False
     
     def event_handle(self, event):
         if self.shown:
@@ -103,7 +118,7 @@ class TextInput:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         self.inputText = self.inputText[:-1]
-                    elif event.key == pygame.K_RETURN:
+                    if event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
                         self.selected = False
-                    elif event.unicode:
+                    if event.unicode.isprintable():
                         self.inputText = self.inputText + event.unicode

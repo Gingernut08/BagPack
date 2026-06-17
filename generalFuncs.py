@@ -1,16 +1,36 @@
-from varSetup import screen, items, buttons, WIDTH, HEIGHT, topSpacing, bottomSpacing, numRightButtons, numLeftButtons
+from imports import pygame
+from varSetup import screen, clickables, WIDTH, HEIGHT, leftSpacing, topSpacing, bottomSpacing, numRightButtons, numLeftButtons, texts
 from guiElements import Button, TextInput
 from buttonFunctions import import_item
-from colorPicker import from_8Bit_RGB
 
 def draw():
     screen.fill((0, 0, 0))
-    for button in buttons:    button.draw()
-    for item in items:    item.draw()
+    for clickable in clickables: clickable.draw()
 
+def cycle_text_boxes(event, tabPress):
+    if event.key == pygame.K_TAB:
+        for text in texts:
+            if not tabPress:
+                tabPress = text.tab_check()
+        if not tabPress:
+            texts[0].selected = True
+            tabPress = True
+    return tabPress
 
 def create_text():
-    i = TextInput
+    xPos = leftSpacing * 2
+    i = 0
+    text = TextInput((xPos, topSpacing + i * 100), 400, 60, "ENTER NAME", screen)
+    i += 1
+    text = TextInput((xPos, topSpacing + i * 100), 400, 60, "ENTER BRAND", screen)
+    i += 1
+    text = TextInput((xPos, topSpacing + i * 100), 400, 60, "ENTER WEIGHT", screen)
+    i += 1
+    text = TextInput((xPos, topSpacing + i * 100), 400, 60, "ENTER WEIGHT", screen)
+    i += 1
+    text = TextInput((xPos, topSpacing + i * 100), 400, 60, "ENTER COLOR", screen)
+    i += 1
+    text = TextInput((xPos, topSpacing + i * 100), 400, 60, "ENTER CATEGORY", screen)
 
 def create_buttons():
     i = 0

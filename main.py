@@ -1,8 +1,7 @@
 from imports import  pygame
-from item import Item, save_item_states, recall_item_states
-from varSetup import root, screen, WIDTH, HEIGHT, items, buttons
-from generalFuncs import draw, create_buttons
-from buttonFunctions import import_item
+from item import save_item_states, recall_item_states
+from varSetup import root, screen, items, clickables, texts
+from generalFuncs import draw, create_buttons, create_text, cycle_text_boxes
 
 pygame.init()
 pygame.font.init()
@@ -29,12 +28,10 @@ running = True
 recall_item_states(screen)
 
 create_buttons()
-
-from guiElements import TextInput
-test = TextInput((200, 200), 200, 100, "INPUT", screen)
-
+create_text()
 
 while running:
+    tabPress = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -42,16 +39,15 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+            if event.key == pygame.K_BACKSPACE:
+                for text in texts:
+                    text.shown = not text.shown
 
-            if event.key == pygame.K_SPACE:
-                Item(testItemPeramters, commonKeys, screen, WIDTH, HEIGHT)
+            tabPress = cycle_text_boxes(event, tabPress)
 
-        for item in items:    item.event_handle(event)
-        test.event_handle(event)
-        for button in buttons:    button.event_handle(event)
+        for clickable in clickables:    clickable.event_handle(event)
     for item in items:    item.update_position()
     draw()
-    test.draw()
     pygame.display.flip()
 
 pygame.quit()

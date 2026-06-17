@@ -1,6 +1,6 @@
 from imports import pygame, colorsys, tkinter, json, ctypes
 from colorPicker import ColorPicker, to_8Bit_RGB, from_8Bit_RGB
-from varSetup import items, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons
+from varSetup import items, clickables, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons
 
 
 def focus_pygame_window():
@@ -45,6 +45,7 @@ def recall_item_states(screen):
 class Item:
     def __init__(self, perameters, commonKeys, screen, WIDTH, HEIGHT):
         items.append(self)
+        clickables.append(self)
         self.shown = True
         self.pos = [100, 100]
         self.selected = False
@@ -87,6 +88,7 @@ class Item:
     
     def delete(self):
         items.remove(self)
+        clickables.remove(self)
     
     def to_dict(self):
         return {
@@ -114,7 +116,7 @@ class Item:
                 json.dump(data, f, indent=4)
             self.delete()
         else:
-            self.pos = [self.screenWidth - self.size[0] - 50, 50]
+            self.pos = [self.saveRange[0][0] - 10, self.pos[1]]
         focus_pygame_window()
     
     def edit(self):
