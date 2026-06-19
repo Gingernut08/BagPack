@@ -2,10 +2,6 @@ from imports import tkinter, json, os
 from item import create_item, new_item, focus_pygame_window
 from guiElements import Button, TextInput
 from varSetup import new_item_makers, items, WIDTH, HEIGHT, screen, leftSpacing, topSpacing, bottomSpacing, numLeftButtons, numRightButtons, itemColor, baseDir
-<<<<<<< HEAD
-=======
-from generalFuncs import random_color
->>>>>>> 9d32714ba088244960a382e41c4ef9a3bc6bb145
 
 def create_new_item_picker():
     xPos = leftSpacing * 2
@@ -26,6 +22,9 @@ def create_new_item_picker():
     j += 1
     button = Button((xPos + j * 250, topSpacing + i * 100), 150, 60, "SUBMIT", submit_item, None, screen)
     new_item_makers.append(button)
+    
+    for new_item_maker in new_item_makers:
+        new_item_maker.shown = False
 
 def create_buttons():
     i = 0
@@ -42,6 +41,9 @@ def create_buttons():
     button = Button((0, topSpacing + i * (HEIGHT - topSpacing - bottomSpacing) // numLeftButtons), 200, (HEIGHT - topSpacing - bottomSpacing) // numLeftButtons, "IMPORT", import_item, (screen, None), screen)
     i += 1
     button = Button((0, topSpacing + i * (HEIGHT - topSpacing - bottomSpacing) // numLeftButtons), 200, (HEIGHT - topSpacing - bottomSpacing) // numLeftButtons, "NEW", new_item, None, screen)
+    
+for item in items:
+    item.shown = True
 
 def cancel():
     for new_item_maker in new_item_makers:
