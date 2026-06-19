@@ -1,3 +1,41 @@
 {
-    "items": []
+    "items": [
+        {
+            "shown": true,
+            "pos": [
+                701,
+                354
+            ],
+            "selected": false,
+            "perameters": {
+                "COMMON": {
+                    "NAME": "Atmos AG 65",
+                    "BRAND": "Osprey",
+                    "WEIGHT": "2.09",
+                    "COLOR": "Blue",
+                    "CATEGORY": "Bag"
+                },
+                "SPECIALIST": {}
+            },
+            "commonKeys": [
+                "NAME",
+                "BRAND",
+                "WEIGHT",
+                "COLOR",
+                "CATEGORY"
+            ],
+            "colorWidth": 20,
+            "relPos": [
+                113,
+                99
+            ],
+            "color": [
+                59.21304000000001,
+                48.858,
+                221.442
+            ],
+            "screenWidth": 1920,
+            "screenHeight": 1080
+        }
+    ]
 }

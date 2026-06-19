@@ -1,9 +1,11 @@
-from imports import pygame, tkinter
+from imports import pygame, tkinter, os
 
 items = []
 buttons = []
 clickables = []
-texts = []
+new_item_makers = []
+
+itemColor = [255, 255, 255]
 
 root = tkinter.Tk()
 
@@ -18,3 +20,5 @@ leftSpacing = 200
 rightSpacing = 100
 numRightButtons = 3
 numLeftButtons = 2
+
+baseDir = os.path.dirname(os.path.abspath(__file__))

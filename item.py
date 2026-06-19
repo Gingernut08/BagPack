@@ -1,6 +1,8 @@
 from imports import pygame, colorsys, tkinter, json, ctypes
 from colorPicker import ColorPicker, to_8Bit_RGB, from_8Bit_RGB
-from varSetup import items, clickables, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons
+from varSetup import items, clickables, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons, new_item_makers, buttons, itemColor
+from generalFuncs import random_color
+
 
 
 def focus_pygame_window():
@@ -10,6 +12,31 @@ def focus_pygame_window():
     if hwnd:
         ctypes.windll.user32.ShowWindow(hwnd, 5)
         ctypes.windll.user32.SetForegroundWindow(hwnd)
+
+def new_item(*args):
+    global itemColor
+    for i in range(3):
+        itemColor.pop(0)
+        itemColor.append(random_color()[i])
+    for new_item_maker in new_item_makers:
+        if not new_item_maker in buttons:
+            new_item_maker.inputText = ""
+        new_item_maker.shown = True
+    for item in items:
+        item.shown = False
+
+def edit_item(data):
+    global itemColor
+    new_item()
+    for i in range(3):
+        itemColor.pop(0)
+        itemColor.append(data["color"][i])
+    common = data["perameters"]["COMMON"]
+    commonKeys = data["commonKeys"]
+    specialist = data["perameters"]["SPECIALIST"]
+    
+    for i in range(len(new_item_makers) - 2):
+        new_item_makers[i].inputText = str(common[commonKeys[i]])
 
 def create_item(data, pos, screen):
     item = Item(
@@ -120,7 +147,8 @@ class Item:
         focus_pygame_window()
     
     def edit(self):
-        print("EDINTING")
+        edit_item(self.to_dict())
+        self.delete()
     
     def draw(self):
         if self.shown:
