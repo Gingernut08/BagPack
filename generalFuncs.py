@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from imports import pygame, random
+=======
+from imports import pygame, random, ctypes
+>>>>>>> 9d32714ba088244960a382e41c4ef9a3bc6bb145
 from varSetup import screen, clickables, new_item_makers, buttons
 
 def draw():
