@@ -1,5 +1,5 @@
 from imports import pygame, random
-from varSetup import screen, clickables, new_item_makers, buttons
+from varSetup import screen, clickables, new_item_makers, buttons, texts
 
 def draw():
     screen.fill((0, 0, 0))
@@ -7,12 +7,11 @@ def draw():
 
 def cycle_text_boxes(event, tabPress):
     if event.key == pygame.K_TAB:
-        for new_item_maker in new_item_makers:
+        for text in texts:
             if not tabPress:
-                if new_item_maker not in buttons:
-                    tabPress = new_item_maker.tab_check()
+                tabPress = text.tab_check()
         if not tabPress:
-            new_item_makers[0].selected = True
+            texts[0].selected = True
             tabPress = True
     return tabPress
 

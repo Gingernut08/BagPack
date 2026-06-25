@@ -1,5 +1,5 @@
 from imports import pygame
-from varSetup import buttons, clickables, new_item_makers, tabPress
+from varSetup import buttons, clickables, new_item_makers, tabPress, texts
 
 class Button:
     def __init__(self, pos, width, height, text, function, perameters, screen):
@@ -61,6 +61,7 @@ class Button:
 class TextInput:
     def __init__(self, pos, width, height, text, screen):
         clickables.append(self)
+        texts.append(self)
         new_item_makers.append(self)
         self.pos = pos
         self.width = width
@@ -106,10 +107,9 @@ class TextInput:
             self.screen.blit(self.renderedText, textRect)
     
     def tab_check(self):
-        if self.selected and not tabPress:
+        if self.selected:
             self.selected = False
-            length = sum(1 if new_item_makers[i] not in buttons else 0 for i in range(len(new_item_makers)))
-            new_item_makers[(new_item_makers.index(self) + 1) % length].selected = True
+            texts[(texts.index(self) + 1) % len(texts)].selected = True
             return True
         return False
     

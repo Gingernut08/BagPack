@@ -1,6 +1,6 @@
 from imports import  pygame
 from item import save_item_states, recall_item_states
-from varSetup import root, screen, items, clickables, new_item_makers
+from varSetup import root, screen, items, clickables, new_item_makers, texts
 from generalFuncs import draw, cycle_text_boxes
 from buttonFunctions import create_buttons, create_new_item_picker
 
