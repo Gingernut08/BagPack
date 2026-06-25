@@ -1,7 +1,7 @@
 from imports import tkinter, json, os
 from item import create_item, new_item, focus_pygame_window
 from guiElements import Button, TextInput
-from varSetup import new_item_makers, items, WIDTH, HEIGHT, screen, leftSpacing, topSpacing, bottomSpacing, numLeftButtons, numRightButtons, itemColor, baseDir
+from varSetup import new_item_makers, items, WIDTH, HEIGHT, screen, leftSpacing, topSpacing, bottomSpacing, numLeftButtons, numRightButtons, itemColor, baseDir, buttons
 
 def create_new_item_picker():
     xPos = leftSpacing * 2
@@ -45,18 +45,24 @@ def create_buttons():
 for item in items:
     item.shown = True
 
-def cancel():
+def cancel(*args):
+    import_item(screen, os.path.join(baseDir, "tempSave/editSave.json"))
     for new_item_maker in new_item_makers:
         new_item_maker.shown = False
     for item in items:
         item.shown = True
+    try:
+        os.remove(os.path.join(baseDir, "tempSave/editSave.json"))
+    except:
+        pass
 
 def submit_item(*args):
     global itemColor
     common = {}
-    for i in range(len(new_item_makers) - 1):
+    for i in range(len(new_item_makers)):
         text = new_item_makers[i]
-        common[text.placeholderText[6:]] = text.inputText
+        if text not in buttons:
+            common[text.placeholderText[6:]] = text.inputText
     keys = list(common.keys())
     for key in keys:
         if common[key] == "":
@@ -72,12 +78,13 @@ def submit_item(*args):
     for item in items:
         item.shown = True
 
-def import_item(screen, *args):
-    filename = tkinter.filedialog.askopenfilename(
-                                                                title="Select File To Import",
-                                                                initialdir=os.path.join(baseDir, "SavedItems"),
-                                                                filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
-                                                            )
+def import_item(screen, filename = None, *args):
+    if not filename:
+        filename = tkinter.filedialog.askopenfilename(
+                                                                    title="Select File To Import",
+                                                                    initialdir=os.path.join(baseDir, "SavedItems"),
+                                                                    filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+                                                                )
     if filename:
         try:
             with open(filename) as f:

@@ -1,6 +1,6 @@
-from imports import pygame, colorsys, tkinter, json, ctypes
+from imports import pygame, colorsys, tkinter, json, ctypes, os
 from colorPicker import ColorPicker, to_8Bit_RGB, from_8Bit_RGB
-from varSetup import items, clickables, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons, new_item_makers, buttons, itemColor
+from varSetup import items, clickables, topSpacing, bottomSpacing, leftSpacing, rightSpacing, numRightButtons, new_item_makers, buttons, itemColor, baseDir
 from generalFuncs import random_color
 
 
@@ -68,6 +68,8 @@ def recall_item_states(screen):
         data = json.load(f)
     for item_data in data["items"]:
         create_item(item_data, item_data["pos"], screen)
+    for item in items:
+        item.shown = True
 
 class Item:
     def __init__(self, perameters, commonKeys, screen, WIDTH, HEIGHT):
@@ -131,13 +133,14 @@ class Item:
             "screenHeight": self.screenHeight
         }
     
-    def save(self):
+    def save(self, filename = None):
         data = self.to_dict()
-        filename = tkinter.filedialog.asksaveasfilename(
-                                                title="Save File",
-                                                defaultextension=".json",
-                                                filetypes=[("JSON files", "*.json")]
-                                            )
+        if not filename:
+            filename = tkinter.filedialog.asksaveasfilename(
+                                                    title="Save File",
+                                                    defaultextension=".json",
+                                                    filetypes=[("JSON files", "*.json")]
+                                                )
         if filename:
             with open(filename, "w") as f:
                 json.dump(data, f, indent=4)
@@ -148,7 +151,7 @@ class Item:
     
     def edit(self):
         edit_item(self.to_dict())
-        self.delete()
+        self.save(os.path.join(baseDir, "tempSave/editSave.json"))
     
     def draw(self):
         if self.shown:

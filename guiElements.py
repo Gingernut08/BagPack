@@ -108,7 +108,8 @@ class TextInput:
     def tab_check(self):
         if self.selected and not tabPress:
             self.selected = False
-            new_item_makers[(new_item_makers.index(self) + 1) % len(new_item_makers)].selected = True
+            length = sum(1 if new_item_makers[i] not in buttons else 0 for i in range(len(new_item_makers)))
+            new_item_makers[(new_item_makers.index(self) + 1) % length].selected = True
             return True
         return False
     
