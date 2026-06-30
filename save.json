@@ -1,10 +1,10 @@
 {
     "items": [
         {
-            "shown": false,
+            "shown": true,
             "pos": [
-                250,
-                150
+                796,
+                765
             ],
             "selected": false,
             "perameters": {
@@ -26,13 +26,128 @@
             ],
             "colorWidth": 20,
             "relPos": [
-                119,
-                100
+                72,
+                105
             ],
             "color": [
                 29.682000000000027,
                 15.300000000000013,
                 255.0
+            ],
+            "screenWidth": 1920,
+            "screenHeight": 1080
+        },
+        {
+            "shown": true,
+            "pos": [
+                653,
+                266
+            ],
+            "selected": false,
+            "perameters": {
+                "COMMON": {
+                    "NAME": "Atmos AG 65",
+                    "BRAND": "Osprey",
+                    "WEIGHT": "2.09",
+                    "COLOR": "Blue",
+                    "CATEGORY": "Backpack"
+                },
+                "SPECIALIST": {}
+            },
+            "commonKeys": [
+                "NAME",
+                "BRAND",
+                "WEIGHT",
+                "COLOR",
+                "CATEGORY"
+            ],
+            "colorWidth": 20,
+            "relPos": [
+                130,
+                131
+            ],
+            "color": [
+                108.57049999999997,
+                219.52950000000004,
+                148.51573999999997
+            ],
+            "screenWidth": 1920,
+            "screenHeight": 1080
+        },
+        {
+            "shown": true,
+            "pos": [
+                451,
+                529
+            ],
+            "selected": false,
+            "perameters": {
+                "COMMON": {
+                    "NAME": "test",
+                    "BRAND": "test2",
+                    "WEIGHT": "test3",
+                    "COLOR": "test4",
+                    "CATEGORY": "test5",
+                    "PERAMETER": "perm",
+                    "VALUE": "testval"
+                },
+                "SPECIALIST": {}
+            },
+            "commonKeys": [
+                "NAME",
+                "BRAND",
+                "WEIGHT",
+                "COLOR",
+                "CATEGORY",
+                "PERAMETER",
+                "VALUE"
+            ],
+            "colorWidth": 20,
+            "relPos": [
+                139,
+                166
+            ],
+            "color": [
+                162,
+                117,
+                102
+            ],
+            "screenWidth": 1920,
+            "screenHeight": 1080
+        },
+        {
+            "shown": true,
+            "pos": [
+                1126,
+                492
+            ],
+            "selected": false,
+            "perameters": {
+                "COMMON": {
+                    "NAME": "Atmos AG 65",
+                    "BRAND": "Osprey",
+                    "WEIGHT": "2.09",
+                    "COLOR": "Blue",
+                    "CATEGORY": "Bag"
+                },
+                "SPECIALIST": {}
+            },
+            "commonKeys": [
+                "NAME",
+                "BRAND",
+                "WEIGHT",
+                "COLOR",
+                "CATEGORY"
+            ],
+            "colorWidth": 20,
+            "relPos": [
+                68,
+                88
+            ],
+            "color": [
+                108.57049999999997,
+                219.52950000000004,
+                148.51573999999997
             ],
             "screenWidth": 1920,
             "screenHeight": 1080
