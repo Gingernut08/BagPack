@@ -25,9 +25,9 @@ def create_new_item_picker():
     button = Button((xPos + xOfset * 250, topSpacing + yOfset * ySpacing), 150, 60, "SUBMIT", submit_item, None, screen)
     new_item_makers.insert(0, button)
     
-    yOfset = 0    
-    button = Button((xSpacing + xPos, topSpacing + yOfset * 100), 750, 60, "ADD NEW PERAMETER", add_perameter, None, screen)
-    new_item_makers.insert(0, button)
+    # yOfset = 0    
+    # button = Button((xSpacing + xPos, topSpacing + yOfset * 100), 750, 60, "ADD NEW PERAMETER", add_perameter, None, screen)
+    # new_item_makers.insert(0, button)
     
     for new_item_maker in new_item_makers:
         new_item_maker.shown = False

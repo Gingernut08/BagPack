@@ -33,12 +33,11 @@ def edit_item(data):
         itemColor.append(data["color"][i])
     common = data["perameters"]["COMMON"]
     commonKeys = data["commonKeys"]
-    specialist = data["perameters"]["SPECIALIST"]
     
-    for i in range(3, len(new_item_makers) - 2):
+    for i in range(len(new_item_makers) - 2):
         print(new_item_makers[i].text)
         print(commonKeys[i])
-        new_item_makers[i].inputText = str(common[commonKeys[i - 3]])
+        new_item_makers[i + 2].inputText = str(common[commonKeys[i]])
 
 def create_item(data, pos, screen):
     item = Item(

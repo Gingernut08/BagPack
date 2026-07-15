@@ -1,0 +1,37 @@
+{
+    "shown": true,
+    "pos": [
+        1625,
+        768
+    ],
+    "selected": false,
+    "perameters": {
+        "COMMON": {
+            "NAME": "name",
+            "BRAND": "brand",
+            "WEIGHT": "weught",
+            "COLOR": "col",
+            "CATEGORY": "cat"
+        },
+        "SPECIALIST": {}
+    },
+    "commonKeys": [
+        "NAME",
+        "BRAND",
+        "WEIGHT",
+        "COLOR",
+        "CATEGORY"
+    ],
+    "colorWidth": 20,
+    "relPos": [
+        103,
+        40
+    ],
+    "color": [
+        150,
+        119,
+        147
+    ],
+    "screenWidth": 1920,
+    "screenHeight": 1080
+}
