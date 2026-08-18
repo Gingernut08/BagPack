@@ -16,3 +16,5 @@ And the new item screen
 
 Requirements for Python:
 pygame, ctypes, colorsys,  tkinter, json, random, os
+
+To run either download and rn the exe, or ensure python and above dependancies are installed and after downloading all source code run main.py
