@@ -13,3 +13,6 @@ Shown below is the edit screen
 And the new item screen
 
 <img width="454" height="616" alt="image" src="https://github.com/user-attachments/assets/d1decc66-fee6-4d82-8bc0-45ff5720d967" />
+
+Requirements for Python:
+pygame, ctypes, colorsys,  tkinter, json, random, os
